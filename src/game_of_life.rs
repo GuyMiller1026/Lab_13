@@ -195,4 +195,14 @@ mod tests {
     // TODO (student): the glider test (after four generations on an empty grid the
     // population is 5 and the shape has moved one row and one column along its
     // direction of travel), and one more test of your own choosing.
+    // This test checks that after four generations it still has 5 alive cells and that it moved one row down and one column to the right
+#[test]
+    fn glider_moves_one_down_one_right_after_four() {
+        let mut grid = load_pattern(3);
+        for _ in 0..4 {
+            grid = next_generation(&grid);
+        }
+        assert_eq!(population(&grid), 5);
+        assert_eq!(grid, grid_from(&[(2, 3), (3, 4), (4, 2), (4, 3), (4, 4)]));
+    }
 }
