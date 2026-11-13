@@ -6,7 +6,7 @@
 
 // TODO: add the imports you need (the pattern and generation prompts use
 // crate::input::read_int; waiting for Enter uses std::io).
-
+use crate::input::read_int;
 const ROWS: usize = 10;
 const COLS: usize = 20;
 type Grid = [[bool; COLS]; ROWS];
@@ -105,7 +105,7 @@ pub fn load_pattern(choice: u32) -> Grid {
      grid
 }
 // Number of live cells.
-pub fn population(_grid: &Grid) -> usize {
+pub fn population(grid: &Grid) -> usize {
     let mut count = 0;
     for row in 0..ROWS {
         for col in 0..COLS {
@@ -119,18 +119,26 @@ pub fn population(_grid: &Grid) -> usize {
 // TODO: replace this Week 12 version. New play(): show the pattern menu (1 blinker,
 // 2 block, 3 glider), ask how many generations, then print each generation with its
 // number and population, waiting for Enter between steps.
+// Setting up the menu option so I can pick one of the presets
 pub fn play() {
-    let mut grid = new_grid();
-    grid[4][10] = true;
-    grid[5][10] = true;
-    grid[6][10] = true;
-    print_grid(&grid);
-    println!();
-    print_neighbor_counts(&grid);
-    println!();
-    let alive = grid[5][10];
-    let neighbors = count_neighbors(&grid, 5, 10);
-    println!("Center cell next generation: {}", if next_state(alive, neighbors) { "alive" } else { "dead" });
+    println!("1) Blinker  2) Block  3) Glider");
+    let choice = read_int("Which pattern? ", 1, 3);
+    let generations = read_int("How many generations? ", 0, 100);
+
+    let mut grid = load_pattern(choice);
+    // includes generation 0 now
+    for n in 0..=generations {
+        println!();
+        println!("Generation {n}, population {}", population(&grid));
+        print_grid(&grid);
+	// This takes away the text if it is the last generation its advancing to
+        if n < generations {
+            println!("Press Enter for the next generation.");
+            let mut wait = String::new();
+            std::io::stdin().read_line(&mut wait).expect("failed to read input");
+            grid = next_generation(&grid);
+        }
+    }
 }
 
 #[cfg(test)]
