@@ -205,4 +205,10 @@ mod tests {
         assert_eq!(population(&grid), 5);
         assert_eq!(grid, grid_from(&[(2, 3), (3, 4), (4, 2), (4, 3), (4, 4)]));
     }
+    // This test that I created checks to see that after starting as a flat row, it turns into a column standing up
+    #[test]
+    fn blinker_flips_to_vertical_after_one() {
+        let grid = next_generation(&load_pattern(1));
+        assert_eq!(grid, grid_from(&[(3, 10), (4, 10), (5, 10)]));
+    }
 }
