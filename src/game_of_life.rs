@@ -2,7 +2,6 @@
 // generations, and preset patterns.
 //
 // TODO: remove the next line once every function below is used.
-#![allow(dead_code)]
 
 // TODO: add the imports you need (the pattern and generation prompts use
 // crate::input::read_int; waiting for Enter uses std::io).
@@ -50,16 +49,6 @@ pub fn next_state(alive: bool, neighbors: u8) -> bool {
         _ => false,
     }
 }
-
-pub fn print_neighbor_counts(grid: &Grid) {
-    for r in 0..ROWS {
-        for c in 0..COLS {
-            print!("{}", count_neighbors(grid, r, c));
-        }
-        println!();
-    }
-}
-
 // The next generation. Read from `grid` and write to a NEW grid, so a cell is never
 // judged using neighbors that have already been updated.
 pub fn next_generation(grid: &Grid) -> Grid {
